@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" id="theme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carica File - Hacker Style</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            background: rgba(30, 30, 30, 0.6); /* Sfondo quasi trasparente */
+            border-radius: 10px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px); /* Effetto blur sullo sfondo */
+            -webkit-backdrop-filter: blur(10px); /* Supporto per Safari */
+            width: 90%;
+            max-width: 500px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+        .file-upload {
+            margin-bottom: 20px;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        label {
+            display: inline-block;
+            padding: 10px 20px;
+            border: 2px solid #03dac6;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+            transition: background 0.3s, border-color 0.3s;
+        }
+        label:hover {
+            background-color: #03dac6;
+            border-color: #018786;
+        }
+        .upload-button, .cancel-button {
+            background: #6200ea;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+            width: 45%; /* Imposta una larghezza fissa */
+            margin: 10px; /* Aggiungi margine tra i pulsanti */
+            display: none; /* Inizialmente nascosto */
+        }
+        .upload-button:hover {
+            background: #3700b3;
+        }
+        .cancel-button {
+            background: red; /* Colore rosso per il pulsante Annulla */
+        }
+        .cancel-button:hover {
+            background: darkred; /* Colore più scuro al passaggio del mouse */
+        }
+        #preview {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #preview img, #preview video {
+            max-width: 100%;
+            max-height: 200px;
+            margin-top: 10px;
+        }
+        #file-name {
+            margin-top: 10px;
+            color: #03dac6; /* Colore per il nome del file */
+        }
+        #theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: #03dac6;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 24px;
+            transition: background 0.3s;
+        }
+        #theme-toggle:hover {
+            background: #018786;
+        }
+        .bottom-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            position: fixed;
+            bottom: 140px; /* Spazio sopra per il pulsante di cambio tema */
+            width: 100%;
+        }
+        .nav-button {
+            width: auto; /* Imposta la larghezza automatica */
+            padding: 8px 16px; /* Aggiusta il padding */
+        }
+        .button-container {
+            display: flex;
+            justify-content: center; /* Centra i pulsanti */
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="glitch">Carica File</h1>
+
+        <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data">
+            <div class="file-upload">
+                <input type="file" name="file" id="file" required onchange="showButtons()">
+                <label for="file">Scegli un file</label>
+            </div>
+
+            <div id="file-name" style="display:none;"></div> <!-- Nome del file -->
+
+            <div id="preview"></div>
+
+            <div class="button-container">
+                <button type="submit" class="upload-button">Carica</button>
+                <button type="button" class="cancel-button" onclick="window.location.href='/'">Annulla</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="bottom-buttons">
+        <button class="nav-button" onclick="window.location.href='/'">Torna</button> <!-- Pulsante ridotto -->
+    </div>
+
+    <button id="theme-toggle">🌙</button>
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+    <script>
+        function showButtons() {
+            // Mostra i pulsanti Carica e Annulla
+            document.querySelector('.upload-button').style.display = 'block';
+            document.querySelector('.cancel-button').style.display = 'block';
+
+            // Mostra il nome del file
+            const fileInput = document.getElementById('file');
+            const fileNameDisplay = document.getElementById('file-name');
+            const fileName = fileInput.files[0].name; // Ottieni il nome del file
+            fileNameDisplay.innerText = `Nome del file: ${fileName}`; // Mostra il nome del file
+            fileNameDisplay.style.display = 'block'; // Rendi visibile il nome del file
+        }
+
+        function previewFile() {
+            const file = document.getElementById('file').files[0];
+            const preview = document.getElementById('preview');
+            preview.innerHTML = ''; // Pulisce le anteprime precedenti
+
+            if (file) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const fileType = file.type;
+                    
+                    if (fileType.startsWith('image/')) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        preview.appendChild(img);
+                    } else if (fileType.startsWith('video/')) {
+                        const video = document.createElement('video');
+                        video.src = e.target.result;
+                        video.controls = true;
+                        preview.appendChild(video);
+                    } else if (fileType.startsWith('audio/')) {
+                        const audio = document.createElement('audio');
+                        audio.src = e.target.result;
+                        audio.controls = true;
+                        preview.appendChild(audio);
+                    } else {
+                        preview.innerHTML = '<p>Formato non supportato per l\'anteprima.</p>';
+                    }
+                }
+
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Assicurati di chiamare previewFile quando un file viene scelto
+        document.getElementById('file').addEventListener('change', function() {
+            previewFile();
+            showButtons(); // Mostra i pulsanti dopo aver selezionato un file
+        });
+    </script>
+</body>
+</html>

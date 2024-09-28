@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" id="theme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload - Hacker Style</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="glitch">File Upload System</h1>
+
+        <!-- Barra di ricerca -->
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Cerca file..." onkeyup="filterFiles()">
+        </div>
+
+        <!-- Tabella dei file -->
+        <table id="fileTable">
+            <thead>
+                <tr>
+                    <th>Nome File</th>
+                    <th>Data Caricamento</th>
+                    <th>Azioni</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for file in files %}
+                <tr>
+                    <td>{{ file.filename }}</td>
+                    <td>{{ file.upload_date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    <td>
+                        <a href="{{ url_for('download_file', file_id=file.id) }}" class="download-button">Scarica</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Pulsante per navigare alla pagina di caricamento -->
+        <div style="text-align: center; margin-top: 20px;">
+            <button class="nav-button" onclick="window.location.href='/upload'">Vai alla Pagina di Caricamento</button>
+        </div>
+    </div>
+
+    <!-- Pulsante per cambiare tema -->
+    <button id="theme-toggle" class="theme-button">🌙</button>
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+    <script>
+        // Funzione per filtrare i file
+        function filterFiles() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toLowerCase();
+            const table = document.getElementById('fileTable');
+            const tr = table.getElementsByTagName('tr');
+
+            for (let i = 1; i < tr.length; i++) {
+                const td = tr[i].getElementsByTagName('td');
+                let match = false;
+                for (let j = 0; j < td.length; j++) {
+                    if (td[j]) {
+                        const txtValue = td[j].textContent || td[j].innerText;
+                        if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                            match = true;
+                        }
+                    }
+                }
+                tr[i].style.display = match ? "" : "none";
+            }
+        }
+    </script>
+</body>
+</html>

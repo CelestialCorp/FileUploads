@@ -1,0 +1,212 @@
+/* Corpo e layout generale */
+body {
+    font-family: 'Fira Code', monospace;
+    background-color: #0d0d0d; /* Ancora più scuro */
+    color: #00ff88;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Effetto glitch sui titoli */
+h1.glitch {
+    position: relative;
+    color: #00ff88;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    animation: glitch 1s infinite;
+}
+
+@keyframes glitch {
+    0% {
+        text-shadow: 2px 2px rgba(0, 255, 136, 0.6), -2px -2px rgba(255, 0, 0, 0.6);
+    }
+    50% {
+        text-shadow: -2px -2px rgba(0, 255, 136, 0.6), 2px 2px rgba(255, 0, 0, 0.6);
+    }
+    100% {
+        text-shadow: 2px 2px rgba(0, 255, 136, 0.6), -2px -2px rgba(255, 0, 0, 0.6);
+    }
+}
+
+/* Animazioni di transizione per i contenuti */
+.container {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 1s forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Effetto sfondo dinamico */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0d0d0d 25%, #111 25%, #111 50%, #0d0d0d 50%, #0d0d0d 75%, #111 75%, #111);
+    background-size: 20px 20px;
+    pointer-events: none;
+    animation: moveBackground 5s linear infinite;
+    z-index: -1;
+}
+
+@keyframes moveBackground {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 40px 40px;
+    }
+}
+
+/* Pulsante dark/light mode con effetto hover */
+button.theme-button {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    padding: 12px 20px;
+    background-color: #00ff88;
+    color: #000;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 1.2em;
+    font-family: 'Fira Code', monospace;
+    box-shadow: 0px 4px 10px rgba(0, 255, 136, 0.3);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button.theme-button:hover {
+    background-color: #00cc66;
+    transform: scale(1.05); /* Effetto hover di ingrandimento */
+}
+
+/* Tabella dei file con effetto hover avanzato */
+table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    background-color: #181818;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #333;
+    font-family: 'Fira Code', monospace;
+    color: #e0e0e0;
+    transition: background-color 0.3s ease;
+}
+
+th {
+    background-color: #222;
+    color: #00ff88;
+    text-transform: uppercase;
+}
+
+tr:hover {
+    background-color: #2c2c2c;
+    transform: scale(1.02);
+}
+
+/* Miglioramento della barra di ricerca */
+.search-bar input {
+    width: 100%;
+    max-width: 600px;
+    padding: 12px;
+    background-color: #222;
+    border: 2px solid #00ff88;
+    color: #00ff88;
+    font-family: 'Fira Code', monospace;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.search-bar input:focus {
+    outline: none;
+    box-shadow: 0 0 10px #00ff88;
+}
+
+/* Modalità chiara */
+.light-mode {
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+.light-mode table, .light-mode th, .light-mode td {
+    background-color: #fff;
+    color: #000;
+}
+
+.light-mode button.theme-button {
+    background-color: #333;
+    color: #f5f5f5;
+}
+
+/* Pulsante di navigazione elegante */
+button.nav-button {
+    display: inline-block;
+    padding: 8px 16px; /* Ridotto per un look più snello */
+    margin: 15px 0;
+    background-color: #1a1a1a; /* Colore di sfondo più scuro per meno invasività */
+    color: #00ff88; /* Testo verde per mantenere il tema */
+    border: 2px solid #00ff88; /* Bordo per una definizione migliore */
+    border-radius: 3px;
+    font-family: 'Fira Code', monospace;
+    font-size: 1em; 
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.5); /* Ombra più delicata */
+}
+
+button.nav-button:hover {
+    background-color: #00ff88; /* Colore di sfondo quando si passa il mouse */
+    color: #000; /* Cambia il colore del testo quando è in hover */
+    transform: scale(1.05); /* Leggero ingrandimento al passaggio del mouse */
+}
+
+/* Icona più piccola e discreta */
+button.nav-button::after {
+    content: ' ➔'; /* Manteniamo l'icona */
+    font-size: 1.2em;
+    color: #00ff88;
+    transition: transform 0.3s ease;
+}
+
+button.nav-button:hover::after {
+    transform: translateX(5px); /* Spostamento più leggero */
+}
+
+.image-container {
+    text-align: center;
+    position: fixed; /* Posizione fissa */
+    bottom: 0; /* Allinea al fondo della finestra */
+    left: 50%; /* Centra orizzontalmente */
+    transform: translateX(-50%); /* Centra l'immagine */
+    margin-bottom: 10px; /* Spazio dal fondo della pagina */
+}
+
+.image-container img {
+    max-width: 100%; /* Adatta l'immagine alla larghezza del contenitore */
+    height: auto; /* Mantiene le proporzioni dell'immagine */
+}
+
+
